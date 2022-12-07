@@ -3,23 +3,23 @@ package kr.ac.kumoh.s20180287.prof.w1401customlist
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.android.volley.toolbox.ImageLoader
-import kr.ac.kumoh.s20180287.prof.w1401customlist.databinding.ActivitySongBinding
 import com.android.volley.toolbox.Volley
 import android.graphics.Bitmap
 import androidx.collection.LruCache
+import kr.ac.kumoh.s20180287.prof.w1401customlist.databinding.ActivityBirdBinding
 
-class SongActivity : AppCompatActivity() {
+class BirdActivity : AppCompatActivity() {
     companion object {
-        const val KEY_TITLE = "SongTitle"
-        const val KEY_SINGER = "SongSinger"
-        const val KEY_IMAGE = "SongImage"
+        const val KEY_NAME = "BirdName"
+        const val KEY_PHOTOGRAPHER = "Photographer"
+        const val KEY_IMAGE = "BirdImage"
     }
-    private lateinit var binding: ActivitySongBinding
+    private lateinit var binding: ActivityBirdBinding
     private lateinit var imageLoader: ImageLoader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySongBinding.inflate(layoutInflater)
+        binding = ActivityBirdBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         imageLoader = ImageLoader(Volley.newRequestQueue(this),
@@ -34,7 +34,7 @@ class SongActivity : AppCompatActivity() {
             })
 
         binding.imageSong.setImageUrl(intent.getStringExtra(KEY_IMAGE), imageLoader)
-        binding.textTitle.text = intent.getStringExtra(KEY_TITLE)
-        binding.textSinger.text = intent.getStringExtra(KEY_SINGER)
+        binding.textName.text = intent.getStringExtra(KEY_NAME)
+        binding.textPhotographer.text = intent.getStringExtra(KEY_PHOTOGRAPHER)
     }
 }

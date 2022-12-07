@@ -2,7 +2,6 @@ package kr.ac.kumoh.s20180287.prof.w1401customlist
 
 import android.app.Application
 import android.graphics.Bitmap
-import android.util.Log
 import android.widget.Toast
 import androidx.collection.LruCache
 import androidx.lifecycle.AndroidViewModel
@@ -17,26 +16,26 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URLEncoder
 
-class SongViewModel(application: Application) : AndroidViewModel(application) {
-    data class Song (var id: Int, var title: String, var singer: String, var image: String)
+class BirdViewModel(application: Application) : AndroidViewModel(application) {
+    data class Bird (var id: Int, var name: String, var photographer: String, var image: String)
 
     companion object {
-        const val QUEUE_TAG = "SongVolleyRequest"
+        const val QUEUE_TAG = "BirdVolleyRequest"
 
         // NOTE: 서버 주소는 본인의 서버 IP 사용할 것
         const val SERVER_URL = "https://appprograming-hw-phsgv.run.goorm.io"
     }                           // https://appprograming-hw-phsgv.run.goorm.io/bird
 
-    private val songs = ArrayList<Song>()
-    private val _list = MutableLiveData<ArrayList<Song>>()
-    val list: LiveData<ArrayList<Song>>
+    private val birds_Data = ArrayList<Bird>()
+    private val _list = MutableLiveData<ArrayList<Bird>>()
+    val list: LiveData<ArrayList<Bird>>
         get() = _list
 
     private var queue: RequestQueue
     val imageLoader: ImageLoader
 
     init {
-        _list.value = songs
+        _list.value = birds_Data
         queue = Volley.newRequestQueue(getApplication())
         imageLoader = ImageLoader(queue,
             object : ImageLoader.ImageCache {
@@ -49,18 +48,18 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
                 }
             })
     }
-    fun getImageUrl(i: Int): String = "$SERVER_URL/image/" + URLEncoder.encode(songs[i].image, "utf-8")
+    fun getImageUrl(i: Int): String = "$SERVER_URL/image/" + URLEncoder.encode(birds_Data[i].image, "utf-8")
 
-    fun requestSong() {
+    fun requestBirds() {
         val request = JsonArrayRequest(
             Request.Method.GET,
             "$SERVER_URL/bird",
             null,
             {
                 //Toast.makeText(getApplication(), it.toString(), Toast.LENGTH_LONG).show()
-                songs.clear()
+                birds_Data.clear()
                 parseJson(it)
-                _list.value = songs
+                _list.value = birds_Data
             },
             {
                 Toast.makeText(getApplication(), it.toString(), Toast.LENGTH_LONG).show()
@@ -75,11 +74,11 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
         for (i in 0 until items.length()) {
             val item: JSONObject = items[i] as JSONObject
             val id = item.getInt("id")
-            val title = item.getString("name")
-            val singer = item.getString("photographer")
+            val name = item.getString("name")
+            val photographer = item.getString("photographer")
             val image = item.getString("image")
 
-            songs.add(Song(id, title, singer, image))
+            birds_Data.add(Bird(id, name, photographer, image))
         }
     }
 

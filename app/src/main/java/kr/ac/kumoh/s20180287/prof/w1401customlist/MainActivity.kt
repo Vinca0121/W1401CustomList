@@ -7,7 +7,6 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +16,7 @@ import kr.ac.kumoh.s20180287.prof.w1401customlist.databinding.ActivityMainBindin
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var model: SongViewModel
+    private lateinit var model: BirdViewModel
     private val songAdapter = SongAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        model = ViewModelProvider(this)[SongViewModel::class.java]
+        model = ViewModelProvider(this)[BirdViewModel::class.java]
 
         binding.list.apply {
             layoutManager = LinearLayoutManager(applicationContext)
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 model.list.value?.size ?: 0)
         }
 
-        model.requestSong()
+        model.requestBirds()
     }
 
     inner class SongAdapter: RecyclerView.Adapter<SongAdapter.ViewHolder>() {
@@ -52,8 +51,8 @@ class MainActivity : AppCompatActivity() {
         inner class ViewHolder(itemView: View)
             : RecyclerView.ViewHolder(itemView), OnClickListener {
 
-            val txTitle: TextView = itemView.findViewById(R.id.text1)
-            val txSinger: TextView = itemView.findViewById(R.id.text2)
+            val txBirdName: TextView = itemView.findViewById(R.id.text1)
+            val txPhotographer: TextView = itemView.findViewById(R.id.text2)
 
             val niImage: NetworkImageView = itemView.findViewById<NetworkImageView>(R.id.image)
 
@@ -66,12 +65,12 @@ class MainActivity : AppCompatActivity() {
 //                Toast.makeText(application,
 //                    model.list.value?.get(adapterPosition)?.title,
 //                    Toast.LENGTH_SHORT).show()
-                val intent = Intent(application, SongActivity::class.java)
-                intent.putExtra(SongActivity.KEY_TITLE,
-                    model.list.value?.get(adapterPosition)?.title)
-                intent.putExtra(SongActivity.KEY_SINGER,
-                    model.list.value?.get(adapterPosition)?.singer)
-                intent.putExtra(SongActivity.KEY_IMAGE,
+                val intent = Intent(application, BirdActivity::class.java)
+                intent.putExtra(BirdActivity.KEY_NAME,
+                    model.list.value?.get(adapterPosition)?.name)
+                intent.putExtra(BirdActivity.KEY_PHOTOGRAPHER,
+                    model.list.value?.get(adapterPosition)?.photographer)
+                intent.putExtra(BirdActivity.KEY_IMAGE,
                     model.getImageUrl(adapterPosition))
                 startActivity(intent)
             }
@@ -86,8 +85,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.txTitle.text = model.list.value?.get(position)?.title
-            holder.txSinger.text = model.list.value?.get(position)?.singer
+            holder.txBirdName.text = model.list.value?.get(position)?.name
+            holder.txPhotographer.text = model.list.value?.get(position)?.photographer
 
             holder.niImage.setImageUrl(model.getImageUrl(position), model.imageLoader)
         }
