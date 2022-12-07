@@ -1,23 +1,31 @@
 package kr.ac.kumoh.s20180287.prof.w1401customlist
 
 import android.app.Application
+import android.graphics.Bitmap
+import android.util.Log
 import android.widget.Toast
+import androidx.collection.LruCache
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
+import java.net.URLEncoder
 
 class SongViewModel(application: Application) : AndroidViewModel(application) {
-    data class Song (var id: Int, var title: String, var singer: String)
+    data class Song (var id: Int, var title: String, var singer: String, var image: String)
 
     companion object {
         const val QUEUE_TAG = "SongVolleyRequest"
-    }
+
+        // NOTE: 서버 주소는 본인의 서버 IP 사용할 것
+        const val SERVER_URL = "https://appprograming-hw-phsgv.run.goorm.io"
+    }                           // https://appprograming-hw-phsgv.run.goorm.io/bird
 
     private val songs = ArrayList<Song>()
     private val _list = MutableLiveData<ArrayList<Song>>()
@@ -25,20 +33,28 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
         get() = _list
 
     private var queue: RequestQueue
+    val imageLoader: ImageLoader
 
     init {
         _list.value = songs
         queue = Volley.newRequestQueue(getApplication())
+        imageLoader = ImageLoader(queue,
+            object : ImageLoader.ImageCache {
+                private val cache = LruCache<String, Bitmap>(100)
+                override fun getBitmap(url: String): Bitmap? {
+                    return cache.get(url)
+                }
+                override fun putBitmap(url: String, bitmap: Bitmap) {
+                    cache.put(url, bitmap)
+                }
+            })
     }
+    fun getImageUrl(i: Int): String = "$SERVER_URL/image/" + URLEncoder.encode(songs[i].image, "utf-8")
 
     fun requestSong() {
-        // NOTE: 서버 주소는 본인의 서버 IP 사용할 것
-        val url = "https://appprograming-hw-phsgv.run.goorm.io/bird"
-
-        // Array를 반환할 경우에는 JsonObjectRequest 대신 JsonArrayRequest 사용
         val request = JsonArrayRequest(
             Request.Method.GET,
-            url,
+            "$SERVER_URL/bird",
             null,
             {
                 //Toast.makeText(getApplication(), it.toString(), Toast.LENGTH_LONG).show()
@@ -61,8 +77,9 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
             val id = item.getInt("id")
             val title = item.getString("name")
             val singer = item.getString("photographer")
+            val image = item.getString("image")
 
-            songs.add(Song(id, title, singer))
+            songs.add(Song(id, title, singer, image))
         }
     }
 

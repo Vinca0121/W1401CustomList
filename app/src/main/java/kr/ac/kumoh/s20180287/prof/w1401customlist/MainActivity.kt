@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.toolbox.ImageLoader
+import com.android.volley.toolbox.NetworkImageView
 import kr.ac.kumoh.s20180287.prof.w1401customlist.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -46,8 +48,16 @@ class MainActivity : AppCompatActivity() {
 
     inner class SongAdapter: RecyclerView.Adapter<SongAdapter.ViewHolder>() {
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-            val txTitle: TextView = itemView.findViewById(R.id.name)
-            val txSinger: TextView = itemView.findViewById(R.id.photographer)
+            //            val txTitle: TextView = itemView.findViewById(android.R.id.text1)
+//            val txSinger: TextView = itemView.findViewById(android.R.id.text2)
+            val txTitle: TextView = itemView.findViewById(R.id.text1)
+            val txSinger: TextView = itemView.findViewById(R.id.text2)
+
+            val niImage: NetworkImageView = itemView.findViewById<NetworkImageView>(R.id.image)
+
+            init {
+                niImage.setDefaultImageResId(android.R.drawable.ic_menu_report_image)
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -59,8 +69,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.txTitle.text = model.list.value?.get(position)?.title ?: null
-            holder.txSinger.text = model.list.value?.get(position)?.singer ?: null
+            holder.txTitle.text = model.list.value?.get(position)?.title
+            holder.txSinger.text = model.list.value?.get(position)?.singer
+
+            holder.niImage.setImageUrl(model.getImageUrl(position), model.imageLoader)
         }
 
         override fun getItemCount() = model.list.value?.size ?: 0
