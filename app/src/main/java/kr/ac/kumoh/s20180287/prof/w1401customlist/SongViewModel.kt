@@ -33,7 +33,7 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
 
     fun requestSong() {
         // NOTE: 서버 주소는 본인의 서버 IP 사용할 것
-        val url = "https://expresssongdb-inhbm.run.goorm.io/song"
+        val url = "https://appprograming-hw-phsgv.run.goorm.io/bird"
 
         // Array를 반환할 경우에는 JsonObjectRequest 대신 JsonArrayRequest 사용
         val request = JsonArrayRequest(
@@ -59,8 +59,8 @@ class SongViewModel(application: Application) : AndroidViewModel(application) {
         for (i in 0 until items.length()) {
             val item: JSONObject = items[i] as JSONObject
             val id = item.getInt("id")
-            val title = item.getString("title")
-            val singer = item.getString("singer")
+            val title = item.getString("name")
+            val singer = item.getString("photographer")
 
             songs.add(Song(id, title, singer))
         }
