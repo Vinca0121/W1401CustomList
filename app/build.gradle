@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'kr.ac.kumoh.s20180287.prof.w1401customlist'
+    namespace 'kr.ac.kumoh.s20180287.prof.BirdGallery'
     compileSdk 33
 
     defaultConfig {
-        applicationId "kr.ac.kumoh.s20180287.prof.w1401customlist"
+        applicationId "kr.ac.kumoh.s20180287.prof.BirdGallery"
         minSdk 21
         targetSdk 33
         versionCode 1

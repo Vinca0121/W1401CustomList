@@ -1,4 +1,4 @@
-package kr.ac.kumoh.s20180287.prof.w1401customlist
+package kr.ac.kumoh.s20180287.prof.BirdGallery
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("kr.ac.kumoh.s20180287.prof.w1401customlist", appContext.packageName)
+        assertEquals("kr.ac.kumoh.s20180287.prof.BirdGallery", appContext.packageName)
     }
 }

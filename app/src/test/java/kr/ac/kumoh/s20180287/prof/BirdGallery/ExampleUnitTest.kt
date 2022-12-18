@@ -1,4 +1,4 @@
-package kr.ac.kumoh.s20180287.prof.w1401customlist
+package kr.ac.kumoh.s20180287.prof.BirdGallery
 
 import org.junit.Test
 

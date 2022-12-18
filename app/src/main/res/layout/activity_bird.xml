@@ -22,7 +22,7 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/image_song"
+            android:id="@+id/image_bird"
             android:layout_width="400dp"
             android:layout_height="400dp"
             android:layout_margin="16dp"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="50sp"
-            app:layout_constraintTop_toBottomOf="@id/image_song"
+            app:layout_constraintTop_toBottomOf="@id/image_bird"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
